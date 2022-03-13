@@ -5,60 +5,199 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
+
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 const { text } = require("stream/consumers");
-
+const { mainModule } = require("process");
+const memberArray = [];
 
 // Write code to use inquirer to gather information about the development team members,
-const promptUser = () => {
-    return inquirer.prompt([
+const promptMember = () => {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "role",
+        message: "Select Employee type",
+        choices: ["Manager", "Engineer", "Intern", "Done"],
+      },
+    ])
+    .then((response) => {
+      if (response.role === "Manager") {
+        managerQuestions();
+      } else if (response.role === "Engineer") {
+        engineerQuestions();
+      } else if (response.role === "Intern") {
+        internQuestions();
+      } else {
+        renderPage();
+      }
+    });
+};
 
-        {
-        type: 'input',
-        name: 'name',
-        message: 'Enter name',
-        validate: nameInput => {
+const managerQuestions = () => {
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "Enter Manager name",
+      validate: (nameInput) => {
         if (nameInput) {
-            return true;
-          } else {
-            console.log('Please enter your name!');
-            return false;
-          }
+          return true;
+        } else {
+          console.log("Please enter your name!");
+          return false;
         }
+      },
     },
 
     {
-        type: 'number',
-        name: 'id',
-        message: 'Enter employee ID'
-
+      type: "input",
+      name: "id",
+      message: "Enter employee ID",
+      validate: (idNumber) => {
+        if (idNumber) {
+          return true;
+        } else {
+          console.log("Please enter employee ID number!");
+          return false;
+        }
+      },
     },
     {
-        type: 'input',
-        name: 'email',
-        message: 'Enter e-mail address'  
+      type: "input",
+      name: "email",
+      message: "Enter e-mail address",
+      validate: (mailInput) => {
+        if (mailInput) {
+          return true;
+        } else {
+          console.log("Please enter an e-mail address!");
+          return false;
+        }
+      },
     },
     {
-        type: 'number',
-        name: 'offnumber',
-        message: 'Enter office number'
-
+      type: "input",
+      name: "officeNum",
+      message: "Enter manahers office number",
     },
-    console.log(nameInput)
-])
+  ]).then(function(response){
+      const newManger = new Manager(response.name,response.id,response.email,response.officeNum);
+      memberArray.push(newManger);
+      console.log(memberArray);
+      promptMember();
+  })
+};
 
-}
- 
+const engineerQuestions = () => {
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "Enter Engineer's name",
+      validate: (nameInput) => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("Please enter your name!");
+          return false;
+        }
+      },
+    },
 
-promptUser()
+    {
+      type: "number",
+      name: "id",
+      message: "Enter employee ID",
+      validate: (idNumber) => {
+        if (idNumber) {
+          return true;
+        } else {
+          console.log("Please enter employee ID number!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "Enter e-mail address",
+      validate: (mailInput) => {
+        if (mailInput) {
+          return true;
+        } else {
+          console.log("Please enter an e-mail address!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "githubUser",
+      message: "Enter GitHub username ",
+    },
+  ]);
+};
 
+const internQuestions = () => {
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "Enter Intern's name",
+      validate: (nameInput) => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("Please enter your name!");
+          return false;
+        }
+      },
+    },
+
+    {
+      type: "number",
+      name: "id",
+      message: "Enter employee ID",
+      validate: (idNumber) => {
+        if (idNumber) {
+          return true;
+        } else {
+          console.log("Please enter employee ID number!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "Enter e-mail address",
+      validate: (mailInput) => {
+        if (mailInput) {
+          return true;
+        } else {
+          console.log("Please enter an e-mail address!");
+          return false;
+        }
+      },
+    },
+    {
+      type: "input",
+      name: "school",
+      message: "Please enter intern's school ",
+    },
+  ]);
+};
+
+
+
+promptMember();
 
 // and to create objects for each team member (using the correct classes as blueprints!)
-
-
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
