@@ -110,7 +110,7 @@ const engineerQuestions = () => {
     },
 
     {
-      type: "number",
+      type: "input",
       name: "id",
       message: "Enter employee ID",
       validate: (idNumber) => {
@@ -140,7 +140,12 @@ const engineerQuestions = () => {
       name: "githubUser",
       message: "Enter GitHub username ",
     },
-  ]);
+  ]).then(function(response){
+    const newEngineer = new Engineer(response.name,response.id,response.email,response.githubUser);
+    memberArray.push(newEngineer);
+    console.log(memberArray);
+    promptMember();
+})
 };
 
 const internQuestions = () => {
@@ -160,7 +165,7 @@ const internQuestions = () => {
     },
 
     {
-      type: "number",
+      type: "input",
       name: "id",
       message: "Enter employee ID",
       validate: (idNumber) => {
@@ -190,8 +195,20 @@ const internQuestions = () => {
       name: "school",
       message: "Please enter intern's school ",
     },
-  ]);
+  ]).then(function(response){
+    const newIntern = new Intern(response.name,response.id,response.email,response.school);
+    memberArray.push(newIntern);
+    console.log(memberArray);
+    promptMember();
+})
 };
+
+const renderPage = () =>  {
+    if(!fs.existsSync(OUTPUT_DIR)){
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+fs.writeFileSync(outputPath,render(memberArray),"utf-8")
+}
 
 
 
