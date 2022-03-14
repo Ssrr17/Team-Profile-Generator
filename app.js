@@ -21,7 +21,7 @@ const promptMember = () => {
       {
         type: "list",
         name: "role",
-        message: "Select Employee type",
+        message: "Please Select Employee type",
         choices: ["Manager", "Engineer", "Intern", "Done"],
       },
     ])
@@ -43,12 +43,12 @@ const managerQuestions = () => {
     {
       type: "input",
       name: "name",
-      message: "Enter Manager name",
+      message: "Pease enter new manager name",
       validate: (nameInput) => {
         if (nameInput) {
           return true;
         } else {
-          console.log("Please enter your name!");
+          console.log("Please enter a name!");
           return false;
         }
       },
@@ -83,7 +83,15 @@ const managerQuestions = () => {
     {
       type: "input",
       name: "officeNum",
-      message: "Enter manahers office number",
+      message: "Enter managers office number",
+      validate: (numInput) => {
+        if (numInput) {
+          return true;
+        } else {
+          console.log("Please enter a office number");
+          return false;
+        }
+      },
     },
   ]).then(function(response){
       const newManger = new Manager(response.name,response.id,response.email,response.officeNum);
@@ -98,12 +106,12 @@ const engineerQuestions = () => {
     {
       type: "input",
       name: "name",
-      message: "Enter Engineer's name",
+      message: "Enter new engineer's name",
       validate: (nameInput) => {
         if (nameInput) {
           return true;
         } else {
-          console.log("Please enter your name!");
+          console.log("Please enter a name!");
           return false;
         }
       },
@@ -139,6 +147,14 @@ const engineerQuestions = () => {
       type: "input",
       name: "githubUser",
       message: "Enter GitHub username ",
+      validate: (gitInput) => {
+        if (gitInput) {
+          return true;
+        } else {
+          console.log("Please enter a Github username!");
+          return false;
+        }
+      },
     },
   ]).then(function(response){
     const newEngineer = new Engineer(response.name,response.id,response.email,response.githubUser);
@@ -158,7 +174,7 @@ const internQuestions = () => {
         if (nameInput) {
           return true;
         } else {
-          console.log("Please enter your name!");
+          console.log("Please enter a name!");
           return false;
         }
       },
@@ -194,6 +210,14 @@ const internQuestions = () => {
       type: "input",
       name: "school",
       message: "Please enter intern's school ",
+      validate: (schoolInput) => {
+        if (schoolInput) {
+          return true;
+        } else {
+          console.log("Please enter a school name!");
+          return false;
+        }
+      },
     },
   ]).then(function(response){
     const newIntern = new Intern(response.name,response.id,response.email,response.school);
